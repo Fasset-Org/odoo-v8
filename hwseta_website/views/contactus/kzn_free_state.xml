@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+	<data>
+		<!-- === KZN and Free State Page === -->
+		<template id="kzn_free_state" name="KZN and Free State" page="True">
+			<t t-call="website.layout">
+				<div id="wrap" class="oe_structure">
+					<div class="oc-sheet clearfix">
+						<div class="oc-layout-wrapper">
+							<div class="oc-content-layout">
+								<div class="oc-content-layout-row">
+
+									<t t-call="hwseta_website.sidebar1" />
+									<div class="oc-layout-cell oc-content">
+										<article id="post-309"
+											class="oc-post oc-article  post-309 page type-page status-publish hentry">
+											<h1 class="oc-postheader">KZN and Free State</h1>
+											<div class="oc-postcontent oc-postcontent-0 clearfix">
+												<h2>The Team</h2>
+												<p>Click on a name below to send an e-mail</p>
+												<h2>Postal Address</h2>
+												<p>Private Bag X15 Bradford Corner Randburg, 2118</p>
+												<h2>Physical Address</h2>
+												<p>19 Hurst Grove Clifton Place, Musgrave Durban, 4001</p>
+											</div>
+
+
+										</article>
+
+
+
+									</div>
+									<t t-call="hwseta_website.sidebar2" />
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</template>
+	</data>
+</openerp>

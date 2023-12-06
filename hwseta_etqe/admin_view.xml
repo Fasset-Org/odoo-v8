@@ -1,0 +1,1635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+		<!--<menuitem name="administration" id="seta_admin_menu" sequence="1" groups="hwseta_etqe.group_seta_administrator"/>-->
+		<!--<menuitem name="administration" id="seta_admin_submenu" parent="seta_admin_menu" sequence="1" groups="hwseta_etqe.group_seta_administrator"/>-->
+		<record id="view_etqe_learner_master_form_admin" model="ir.ui.view">
+			<field name="name">etqe.learner.master.form.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<form create="false">
+					  <header>
+          </header>
+					<field name="image_medium" widget='image' class="oe_left oe_avatar" />
+					<div>
+						<group>
+							<group>
+								<field name="person_title" readonly="1" />
+								<label for="name" />
+								<h1>
+
+									<field name="name" readonly="1" />
+
+								</h1>
+
+								<field name="person_middle_name" readonly="1" />
+
+								<field name="maiden_name" readonly="1" />
+
+								<field name="person_last_name" string="Surname" readonly="1" />
+							</group>
+							<group>
+							<!--TODO:determine reason for readonly hard eval -->
+								<field name="work_email" widget="email" required="1" readonly="1"
+									attrs="{'readonly':[('state','in',['active','re-enrolled','dropout','replacement','suspended','inactive','achieved'])]}" />
+
+									<field name="work_phone" placeholder="0114768570" readonly="1" />
+
+								<field name="learner_status" readonly="1" />
+
+								<field name="learner_reg_no" string="Learner Registration No." readonly="1" />
+							</group>
+						</group>
+					</div>
+					<div class="oe_right oe_button_box" name="button_box">
+						<!-- Put here related buttons -->
+					</div>
+					<notebook>
+						<page string="Qualification">
+							<div>
+								<ul style="font-size: 12px;">
+		                        	<li style="color: green">Achieved</li>
+		                        	<li style="color: orange">Partially Achieved</li>
+	                        	</ul>
+							</div>
+							<group>
+								<field name="learner_qualification_ids" nolabel="1">
+
+									<tree colors="green:is_learner_achieved==True;red:is_learner_achieved==False">
+										<field name="id"/>
+										<field name="learner_qualification_parent_id"
+											on_change="onchange_qualification(learner_qualification_parent_id)"
+											nolabel="1" />
+										<field name="start_date" />
+										<field name="end_date" />
+										<field name="provider_id" />
+										<field name="certificate_no" />
+										<field name="certificate_date" />
+										<!--TODO: hard eval  -->
+										<field name="is_complete" readonly="1" />
+										<field name="is_learner_achieved" readonly="1" />
+										<field name="assessors_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+										<field name="assessor_date" />
+                    					<field name="moderators_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+										<field name="moderator_date" />
+										<field name="approval_date" />
+										<field name="batch_id" />
+										<field name="qual_status" />
+										<field name="lqw_status"/>
+										<!--
+										<button name="lqw_approve_qual" string="Send request"
+						 type="object" icon="gtk-go-forward" attrs="{'invisible':[('lqw_status','=','approved')]}"
+												groups="hwseta_etqe.group_lqw_approver,hwseta_etqe.group_lqw_administrator," />
+									-->
+										<button name="lqw_approve_qual" string="Send request"
+						 				type="object" icon="gtk-go-forward"
+										groups="hwseta_etqe.group_lqw_approver,hwseta_etqe.group_lqw_administrator,hwseta_etqe.group_seta_administrator"
+										attrs="{'invisible':[('lqw_status','!=','awaiting_approval')]}"/>
+										<button name="action_print_certificate_button"
+												string="print certificate"
+												type="object"
+												icon="gtk-print"
+												groups="hwseta_etqe.group_lqw_printer,hwseta_etqe.group_seta_administrator"
+												attrs="{'invisible':[('lqw_status','!=','approved')]}"/>
+										<button name="action_print_qualification_sor_button"
+												string="print SOR"
+												type="object"
+												icon="gtk-print"
+												groups="hwseta_etqe.group_lqw_printer,hwseta_etqe.group_seta_administrator"
+												attrs="{'invisible':[('lqw_status','!=','approved')]}"/>
+
+										<!-- <button name="lqw_approve_qual" string="Send request"
+						 				type="object" icon="gtk-go-forward"
+										groups="hwseta_etqe.group_lqw_approver,hwseta_etqe.group_lqw_administrator"/> -->
+									</tree>
+									<form string="Qualifications">
+										<sheet>
+											<group>
+												<group>
+													<field name="learner_qualification_parent_id"
+														on_change="onchange_qualification(learner_qualification_parent_id)" />
+													<field name="start_date" />
+													<field name="assessors_id" />
+													<field name="moderators_id" />
+													<field name="batch_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+												</group>
+												<group>
+													<field name="provider_id" />
+													<field name="end_date" />
+													<field name="assessor_date" />
+													<field name="moderator_date" />
+													<field name="certificate_no" />
+													<field name="certificate_date" />
+												</group>
+											</group>
+											<group>
+												<field name="learner_registration_line_ids" nolabel="1"
+													context="{'model' : 'learner.registration.qualification', 'provider_id' :
+																provider_id}">
+																<!-- TODO: hard eval ?  -->
+													<tree string="Qualifications Line" editable="bottom"
+														delete="false" create="false">
+														<field name="type"  />
+														<field name="id_data" />
+														<field name="title"  />
+														<field name="level1"  />
+														<field name="level2"  />
+														<field name="level3"  />
+														<field name="selection" />
+														<field name="achieve" />
+														<field name="is_rpl_learner" />
+
+													</tree>
+												</field>
+											</group>
+										</sheet>
+									</form>
+								</field>
+							</group>
+						</page>
+						<page string="Skills Programme">
+
+							<div>
+								<ul style="font-size: 12px;">
+		                        	<li style="color: green">Achieved</li>
+		                        	<li style="color: orange">Partially Achieved</li>
+	                        	</ul>
+							</div>
+							<group colspan="2" col="8">
+								<field name="skills_programme_ids" nolabel="1">
+
+									<tree colors="green:is_learner_achieved==True;red:is_learner_achieved==False">
+										<field name="saqa_skill_id" invisible="1"/>
+										<field name="skills_programme_id" widget="selection"
+											placeholder="Skills Programme" class="oe_no_button" />
+										<field name="select" invisible="1" />
+										<field name="start_date" />
+										<field name="end_date" />
+										<field name="provider_id" />
+										<field name="certificate_no" />
+										<field name="certificate_date" />
+										<!-- TODO: hard eval-->
+										<field name="is_complete" readonly="1" />
+										<field name="is_learner_achieved" readonly="1" />
+										<field name="assessors_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+										<field name="assessor_date" />
+										<field name="moderators_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+										<field name="moderator_date" />
+										<field name="approval_date" />
+										<field name="batch_id" />
+										<field name="skill_status" />
+										<field name="lqw_status"/>
+										<button name="lqw_approve_sp" string="Send request"
+						 				type="object" icon="gtk-go-forward"
+										groups="hwseta_etqe.group_lqw_approver,hwseta_etqe.group_lqw_administrator,hwseta_etqe.group_seta_administrator"
+										attrs="{'invisible':[('lqw_status','!=','awaiting_approval')]}"/>
+										<button name="action_print_sp_sor_button"
+												string="print SOR"
+												type="object"
+												icon="gtk-print"
+												groups="hwseta_etqe.group_lqw_printer,hwseta_etqe.group_seta_administrator"
+												attrs="{'invisible':[('lqw_status','!=','approved')]}"/>
+
+									</tree>
+									<form string="Skills Programme">
+										<sheet>
+											<group>
+												<group>
+													<field name="skills_programme_id"
+														on_change="onchange_skills_programme(skills_programme_id)"
+														options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+													<field name="start_date" />
+													<field name="assessors_id" />
+													<field name="assessor_date" />
+													<field name="batch_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+												</group>
+												<group>
+													<field name="saqa_skill_id" />
+													<field name="end_date" />
+													<field name="moderators_id" />
+													<field name="moderator_date" />
+													<field name="provider_id" />
+													<field name="select" invisible="1"/>
+													<field name="certificate_no" />
+													<field name="certificate_date" />
+												</group>
+											</group>
+											<group>
+												<field name="unit_standards_line" nolabel="1">
+													<tree string="Unit Standards Line" editable="bottom"
+														delete="false" create="false">
+														<!-- TODO: hard eval...why is it editable, all the fields are readonly -->
+														<field name="type" />
+														<field name="id_no" />
+														<field name="title" />
+														<field name="level1" />
+														<field name="level2" />
+														<field name="level3" />
+														<field name="selection" />
+														<field name="achieve" />
+													</tree>
+
+												</field>
+											</group>
+
+										</sheet>
+									</form>
+								</field>
+							</group>
+						</page>
+						<!-- Learner Master Learning Programme Starts -->
+						<page string="Learning Programme">
+
+							<div>
+								<ul style="font-size: 12px;">
+		                        	<li style="color: green">Achieved</li>
+		                        	<li style="color: orange">Partially Achieved</li>
+	                        	</ul>
+							</div>
+							<group colspan="2" col="8">
+								<field name="learning_programme_ids" nolabel="1">
+
+
+									<tree colors="green:is_learner_achieved==True;red:is_learner_achieved==False">
+										<field name="lp_saqa_id" invisible="1"/>
+										<field name="learning_programme_id" widget="selection"
+											placeholder="Learning Programme" class="oe_no_button" />
+										<field name="select" invisible="1" />
+										<field name="start_date" />
+										<field name="end_date" />
+										<field name="provider_id" />
+										<field name="certificate_no" />
+										<field name="certificate_date" />
+										<!-- TODO: hard eval -->
+										<field name="is_complete" readonly="1" />
+										<field name="is_learner_achieved" readonly="1" />
+										<field name="assessors_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+										<field name="assessor_date" />
+										<field name="moderators_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+										<field name="moderator_date" />
+										<field name="approval_date" />
+										<field name="batch_id" />
+										<field name="lp_status" />
+										<field name="lqw_status"/>
+										<button name="lqw_approve_lp" string="Send request"
+						 				type="object" icon="gtk-go-forward"
+										groups="hwseta_etqe.group_lqw_approver,hwseta_etqe.group_lqw_administrator,hwseta_etqe.group_seta_administrator"
+										attrs="{'invisible':[('lqw_status','!=','awaiting_approval')]}"/>
+										<button name="action_print_lp_cert_button"
+												string="print certificate"
+												type="object"
+												icon="gtk-print"
+												groups="hwseta_etqe.group_lqw_printer,hwseta_etqe.group_seta_administrator"
+												attrs="{'invisible':[('lqw_status','!=','approved')]}"/>
+										<button name="action_print_lp_sor_button"
+												string="print SOR"
+												type="object"
+												icon="gtk-print"
+												groups="hwseta_etqe.group_lqw_printer,hwseta_etqe.group_seta_administrator"
+												attrs="{'invisible':[('lqw_status','!=','approved')]}"/>
+									</tree>
+									<form string="Learning Programme">
+										<sheet>
+											<group>
+												<group>
+													<field name="learning_programme_id"
+														on_change="onchange_learning_programme(learning_programme_id)"
+														options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+													<field name="start_date" />
+													<field name="assessors_id" />
+													<field name="assessor_date" />
+													<field name="batch_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+												</group>
+												<group>
+													<field name="lp_saqa_id" />
+													<field name="end_date" />
+													<field name="moderators_id" />
+													<field name="moderator_date" />
+													<field name="provider_id" />
+													<field name="select" invisible="1"/>
+													<field name="certificate_no" />
+													<field name="certificate_date" />
+												</group>
+											</group>
+											<!-- <field name="qualification_id" readonly="1"/> -->
+											<group>
+												<field name="unit_standards_line" nolabel="1">
+													<tree string="Unit Standards Line" editable="bottom"
+														delete="false" create="false">
+														<!-- TODO: hard eval -->
+														<field name="type"/>
+														<field name="id_no"/>
+														<field name="title"/>
+														<field name="level1"/>
+														<field name="level2"/>
+														<field name="level3"/>
+														<field name="selection"/>
+														<field name="achieve"/>
+														<field name="seta_approved_lp" readonly="1"/>
+														<field name="provider_approved_lp" readonly="1"/>
+													</tree>
+
+												</field>
+											</group>
+										</sheet>
+									</form>
+								</field>
+							</group>
+						</page>
+						<!-- Learner Master Learning Programme Ends -->
+					</notebook>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="view_provider_learner_tree_admin" model="ir.ui.view">
+			<field name="name">hr.provider.learner.tree.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<tree string="Provider Learner" create="false">
+					<field name="learner_identification_id" />
+					<field name="name" />
+					<field name="work_phone" placeholder="0114768570" />
+					<field name="work_email" />
+					<field name="learners_status" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_etqe_learner_search_admin" model="ir.ui.view">
+			<field name="name">hr.provider.learner.search.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<search string="Learner Search">
+					<field name="name"/>
+					<field name="learner_identification_id" />
+					<field name="learner_reg_no" />
+					<field name="national_id" />
+					<group string="Group By">
+						<filter string="Status" icon="terp-personal" domain="[]"
+							context="{'group_by':'state'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+		<!-- Action for Provider Learner view -->
+		<record id="action_provider_learner_view_admin" model="ir.actions.act_window">
+			<field name="name">Provider Learner Profile Admin</field>
+			<field name="res_model">hr.employee</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('is_learner','=',True),('provider_learner','=',True)]
+			</field>
+			<field name="context">{'default_is_learner':1,'default_seta_elements':1,'default_provider_learner':1}
+			</field>
+			<field name="view_id" eval="False" />
+			<field name="search_view_id" ref="view_etqe_learner_search_admin" />
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to add a new Learner Profile.
+				</p>
+			</field>
+		</record>
+
+<!-- inhert learner_master_form_admin -->
+    <record id="view_etqe_learner_master_form_admin_inherit" model="ir.ui.view">
+        <field name="name">view.etqe.learner.master.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="view_etqe_learner_master_form_admin" />
+        <field name="groups_id" eval="[(6, 0, [ref('hwseta_etqe.group_lqw_approver') ])]" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='learner_qualification_ids']//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+            <xpath expr="//field[@name='skills_programme_ids']//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+            <xpath expr="//field[@name='learning_programme_ids']//tree" position="attributes">
+                <attribute name="create">false</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+		<record id="action_learner_master_tree_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_provider_learner_tree_admin"/>
+			<field name="act_window_id" ref="action_provider_learner_view_admin"/>
+		</record>
+
+		<record id="action_learner_master_form_admin" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence"/>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_etqe_learner_master_form_admin"/>
+			<field name="act_window_id" ref="action_provider_learner_view_admin"/>
+		</record>
+		<!--<menuitem name="Learners_Admin" id="learner_master_entry_admin" action="action_provider_learner_view_admin"-->
+			<!--sequence="1" parent="seta_admin_submenu" groups="hwseta_etqe.group_seta_administrator"/>-->
+		<menuitem name="Learners_Admin" id="learner_master_entry_admin" action="action_provider_learner_view_admin"
+			sequence="1" groups="hwseta_etqe.group_seta_administrator,hwseta_etqe.group_lqw_administrator,hwseta_etqe.group_lqw_approver,hwseta_etqe.group_lqw_printer"/>
+
+		<!--learning registration qualification  -->
+		<record id="learner_registration_qualification_form_admin" model="ir.ui.view">
+			<field name="name">learner.registration.qualification.form.admin</field>
+			<field name="model">learner.registration.qualification</field>
+			<field name="arch" type="xml">
+				<form create="false">
+					<header>
+
+					</header>
+					<group>
+						<group>
+							<field name="learner_qualification_id"/>
+							<field name="learner_qualification_parent_id"/>
+							<field name="learner_registration_line_ids"/>
+							<field name="start_date"/>
+							<field name="end_date"/>
+							<field name="approval_date"/>
+							<field name="provider_id"/>
+							<field name="learner_id"/>
+							<field name="is_learner_achieved"/>
+							<field name="assessors_id"/>
+							<field name="assessor_date"/>
+							<field name="moderators_id"/>
+							<field name="moderator_date"/>
+							<field name="minimum_credits"/>
+							<field name="total_credits"/>
+							<field name="certificate_no"/>
+							<field name="is_complete"/>
+							<field name="batch_id"/>
+							<field name="certificate_date"/>
+							<field name="qual_status"/>
+						</group>
+					</group>
+					<!-- <div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+						<field name="message_ids" widget="mail_thread" />
+					</div> -->
+				</form>
+			</field>
+		</record>
+		<record id="learner_registration_qualification_tree_admin" model="ir.ui.view">
+			<field name="name">learner.registration.qualification.tree.admin</field>
+			<field name="model">learner.registration.qualification</field>
+			<field name="arch" type="xml">
+				<tree string="learner.registration.qualification" create="false">
+					<field name="id"/>
+					<field name="learner_qualification_id"/>
+					<field name="learner_qualification_parent_id"/>
+					<field name="learner_registration_line_ids"/>
+					<field name="start_date"/>
+					<field name="end_date"/>
+					<field name="approval_date"/>
+							<field name="provider_id"/>
+							<field name="learner_id"/>
+							<field name="is_learner_achieved"/>
+							<field name="assessors_id"/>
+							<field name="assessor_date"/>
+							<field name="moderators_id"/>
+							<field name="moderator_date"/>
+							<field name="minimum_credits"/>
+							<field name="total_credits"/>
+							<field name="certificate_no"/>
+							<field name="is_complete"/>
+							<field name="batch_id"/>
+							<field name="certificate_date"/>
+							<field name="qual_status"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="learner_registration_qualification_search_admin" model="ir.ui.view">
+			<field name="name">learner.registration.qualification.search.admin</field>
+			<field name="model">learner.registration.qualification</field>
+			<field name="arch" type="xml">
+				<search string="Learner Search">
+					<field name="learner_qualification_id" />
+
+					<!-- <group string="Group By">
+						<filter string="Status" icon="terp-personal" domain="[]"
+							context="{'group_by':'state'}" />
+					</group> -->
+				</search>
+			</field>
+		</record>
+		<record id="action_learner_registration_qualification_view_admin" model="ir.actions.act_window">
+			<field name="name">learner.registration.qualification.Admin</field>
+			<field name="res_model">learner.registration.qualification</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<!-- <field name="domain">[('is_learner','=',True),('provider_learner','=',True)]
+			</field> -->
+			<!-- <field name="context">{'default_is_learner':1,'default_seta_elements':1,'default_provider_learner':1}
+			</field> -->
+			<field name="view_id" eval="False" />
+			<field name="search_view_id" ref="learner_registration_qualification_search_admin" />
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to add a new Learner Profile.
+				</p>
+			</field>
+		</record>
+
+		<record id="action_learner_registration_qualification_tree_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="learner_registration_qualification_tree_admin" />
+			<field name="act_window_id" ref="action_learner_registration_qualification_view_admin" />
+		</record>
+
+		<record id="action_learner_registration_qualification_form_admin" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="learner_registration_qualification_form_admin" />
+			<field name="act_window_id" ref="action_learner_registration_qualification_view_admin" />
+		</record>
+		<!--<menuitem name="Learners Qualifications" id="learner_registration_qualification_admin_menu" action="action_learner_registration_qualification_view_admin"-->
+			<!--sequence="1" parent="seta_admin_submenu" groups="hwseta_etqe.group_seta_administrator"/>-->
+		<menuitem name="Learners Qualifications" id="learner_registration_qualification_admin_menu" action="action_learner_registration_qualification_view_admin"
+			sequence="1" groups="hwseta_etqe.group_seta_administrator"/>
+
+		<!-- learning.programme.learner.rel -->
+		<record id="learning_programme_learner_rel_form_admin" model="ir.ui.view">
+			<field name="name">learning.programme.learner.rel.form.admin</field>
+			<field name="model">learning.programme.learner.rel</field>
+			<field name="arch" type="xml">
+				<form create="false">
+					<header>
+
+					</header>
+					<group>
+						<group>
+							<field name="lp_saqa_id"/>
+							<field name="learning_programme_id"/>
+							<field name="unit_standards_line"/>
+							<field name="learning_programme_learner_rel_id"/>
+							<field name="select"/>
+							<field name="learning_programme_learner_rel_ids"/>
+							<field name="start_date"/>
+							<field name="end_date"/>
+							<field name="assessors_id"/>
+							<field name="assessor_date"/>
+							<field name="moderators_id"/>
+							<field name="moderator_date"/>
+							<field name="minimum_credits"/>
+							<field name="total_credits"/>
+							<field name="batch_id"/>
+							<field name="provider_id"/>
+							<field name="approval_date"/>
+							<field name="is_learner_achieved"/>
+							<field name="is_complete"/>
+							<field name="certificate_no"/>
+							<field name="certificate_date"/>
+							<field name="lp_status"/>
+						</group>
+					</group>
+					<!-- <div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+						<field name="message_ids" widget="mail_thread" />
+					</div> -->
+				</form>
+			</field>
+		</record>
+		<record id="view_learning_programme_learner_rel_tree_admin" model="ir.ui.view">
+			<field name="name">learning.programme.learner.rel.admin</field>
+			<field name="model">learning.programme.learner.rel</field>
+			<field name="arch" type="xml">
+				<tree string="learning_programme_learner" create="false">
+					<field name="lp_saqa_id"/>
+					<field name="learning_programme_id"/>
+					<field name="unit_standards_line"/>
+					<field name="learning_programme_learner_rel_id"/>
+					<field name="select"/>
+					<field name="learning_programme_learner_rel_ids"/>
+					<field name="start_date"/>
+					<field name="end_date"/>
+					<field name="assessors_id"/>
+					<field name="assessor_date"/>
+					<field name="moderators_id"/>
+					<field name="moderator_date"/>
+					<field name="minimum_credits"/>
+					<field name="total_credits"/>
+					<field name="batch_id"/>
+					<field name="provider_id"/>
+					<field name="approval_date"/>
+					<field name="is_learner_achieved"/>
+					<field name="is_complete"/>
+					<field name="certificate_no"/>
+					<field name="certificate_date"/>
+					<field name="lp_status"/>
+
+				</tree>
+			</field>
+		</record>
+		<record id="view_learning_programme_learner_search_admin" model="ir.ui.view">
+			<field name="name">learning.programme.learner.rel.search.admin</field>
+			<field name="model">learning.programme.learner.rel</field>
+			<field name="arch" type="xml">
+				<search string="learning programme learner Search">
+					<field name="lp_saqa_id"/>
+
+
+				</search>
+			</field>
+		</record>
+		<record id="action_learning_programme_learner_rel_view_admin" model="ir.actions.act_window">
+			<field name="name">learning_programme_learner_rel.Admin</field>
+			<field name="res_model">learning.programme.learner.rel</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+
+
+
+			<field name="view_id" eval="False" />
+			<field name="search_view_id" ref="view_learning_programme_learner_search_admin" />
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to add a new Learner Profile.
+				</p>
+			</field>
+		</record>
+
+		<record id="action_learning_programme_learner_tree_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_learning_programme_learner_rel_tree_admin" />
+			<field name="act_window_id" ref="action_learning_programme_learner_rel_view_admin" />
+		</record>
+
+		<record id="action_learning_programme_learner_form_admin" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="learning_programme_learner_rel_form_admin" />
+			<field name="act_window_id" ref="action_learning_programme_learner_rel_view_admin" />
+		</record>
+		<!--<menuitem name="Learning Programme Learner" id="learning_programme_learner_rel_admin_menu" action="action_learning_programme_learner_rel_view_admin"-->
+			<!--sequence="1" parent="seta_admin_submenu" groups="hwseta_etqe.group_seta_administrator"/>-->
+		<menuitem name="Learning Programme Learner" id="learning_programme_learner_rel_admin_menu" action="action_learning_programme_learner_rel_view_admin"
+			sequence="1" groups="hwseta_etqe.group_seta_administrator"/>
+
+			<!-- Providers/res partner -->
+
+			<record id="view_res_partner_form_admin" model="ir.ui.view">
+			<field name="name">provider.form.admin</field>
+			<field name="model">res.partner</field>
+			<field name="arch" type="xml">
+				<form create="false">
+					<!-- <header>
+
+					</header> -->
+					<group>
+						  <group>
+                  <!--
+							<field name="is_active_provider"/>
+							<field name="is_existing_provider"/>
+							<field name="is_visible"/>
+              -->
+							<field name="provider_status_Id" readonly="1"/>
+							<field name="user_id" string="user" readonly="1"/>
+							<field name="provider_start_date" readonly="1"/>
+							<field name="provider_end_date" readonly="1"/>
+              <!--
+              <field name="email"/>
+							<field name="phone"/>
+							<field name="mobile"/>
+							<field name="provider_contact_ids"/>
+							<field name="assessors_ids"/>
+							<field name="moderators_ids"/>
+							<field name="assessors_campus_ids"/>
+							<field name="moderators_campus_ids"/>
+							<field name="assess_pro_id"/>
+							<field name="provider_sic_code"/>
+							<field name="txtRegName"/>
+							<field name="txtTradeName"/>
+							<field name="txtAbbrTradeName"/>
+							<field name="cboOrgLegalStatus"/>
+							<field name="txtCompanyRegNo"/>
+							<field name="txtVATRegNo"/>
+							<field name="cboOrgSICCode"/>
+							<field name="txtSDLNo"/>
+							<field name="cboTHETAChamberSelect"/>
+							<field name="cboProviderFocus"/>
+							<field name="txtNumYearsCurrentBusiness"/>
+              -->
+
+              <field name="qualification_ids" nolabel="1">
+				   <tree>
+					  <field name="saqa_qual_id" readonly="1" />
+					  <field name="request_send" invisible="1" />
+					  <field name="approval_request" invisible="1" />
+					  <field name="reject_request" invisible="1" />
+					  <field name="qualification_id" widget="selection"
+						 placeholder="Qualification" class="oe_no_button" />
+					  <field name="is_exit_level_outcomes" readonly="1"/>
+					  <field name="assessors_id"
+						 options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+					  <field name="assessor_sla_document" domain="[('id','=',None)]"
+						 options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+					  <field name="moderators_id"
+						 options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+					  <field name="moderator_sla_document" domain="[('id','=',None)]"
+						 options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+					  <field name="status"></field>
+					  <button name="action_send_request" string="Send request"
+						 type="object" icon="gtk-go-forward" attrs="{'invisible':[('request_send','=',True)]}"
+						 groups="hwseta_etqe.group_prov_quals,hwseta_etqe.group_seta_administrator,hwseta_etqe.group_dc_stakeholder_data" />
+					  <button name="action_approved_request" string="Approve"
+						 type="object" icon="gtk-go-forward"
+						 attrs="{'invisible':['|','|',('approval_request','=',True),('request_send','=',False),('reject_request','=',True)]}"
+						 groups="hwseta_etqe.group_qual_approvals,hwseta_etqe.group_seta_administrator,hwseta_etqe.group_dc_stakeholder_data" />
+					  <button name="action_rejected_request" string="Reject"
+						 type="object" icon="gtk-close"
+						 attrs="{'invisible':['|','|',('reject_request','=',True),('request_send','=',False),('approval_request','=',True)]}"
+						 groups="hwseta_etqe.group_qual_approvals,hwseta_etqe.group_seta_administrator" />
+				   </tree>
+				   <form string="Qualifications">
+					  <sheet>
+						 <group>
+							<group>
+				<field name="accreditation_qualification_id" readonly="1"/>
+							   <field name="qualification_id" on_change="onchange_qualification(qualification_id)" options="{'no_create': True,'no_quick_create':True,'no_open':True}" domain="[('seta_branch_id','=','585')]"/>
+							   <field name="is_exit_level_outcomes" readonly="1"/>
+							   <field name="assessor_no" placeholder="Enter Assessor ID"/>
+							   <field name="assessors_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+
+							   <field name="assessor_sla_document" domain="[('id','=',None)]"
+								  options="{'no_open':True}" />
+							</group>
+							<group>
+							   <field name="saqa_qual_id" />
+							   <field name="moderator_no" placeholder="Enter Moderator ID"/>
+							   <field name="moderators_id"
+								  options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+							   <field name="moderator_sla_document" domain="[('id','=',None)]"
+								  options="{'no_open':True}" />
+							</group>
+						 </group>
+						 <div>
+							<ul style="font-size: 12px;">
+												 <li style="color: blue">Provider Learning Material</li>
+											  </ul>
+						 </div>
+						 <group>
+							<field name="qualification_line" nolabel="1">
+							   <tree string="Qualifications Line" editable="bottom"
+								  delete="false" create="false" colors="blue:is_provider_approved == True">
+								  <field name="type" readonly="1" />
+								  <field name="id_data" readonly="1" />
+								  <field name="title" readonly="1" />
+								  <field name="level1" readonly="1" />
+								  <field name="level2" readonly="1" />
+								  <field name="level3" readonly="1" />
+								  <field name="selection"
+									 attrs="{'readonly': ['|',('type','in',['Core','Fundamental']),('is_seta_approved','=',True)]}" />
+								  <field name="is_seta_approved" readonly="1"/>
+								  <field name="is_provider_approved" readonly="1"/>
+							   </tree>
+							</field>
+						 </group>
+					  </sheet>
+				   </form>
+				</field>
+              <!-- <field name="qualification_id"/> -->
+ 				<field name="skills_programme_ids" nolabel="1">
+								<tree>
+									<field name="request_send" invisible="1" />
+									<field name="approval_request" invisible="1" />
+									<field name="reject_request" invisible="1" />
+
+									<field name="skill_saqa_id" />
+									<field name="skills_programme_id" widget="selection"
+										placeholder="Skills Programme" class="oe_no_button" />
+									<field name="assessors_id"
+										options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+									<field name="assessor_sla_document" domain="[('id','=',None)]"
+										options="{'no_quick_create':True,'no_open':True}" />
+									<field name="moderators_id"
+										options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+									<field name="moderator_sla_document" domain="[('id','=',None)]"
+										options="{'no_quick_create':True,'no_open':True}" />
+									<field name="status"></field>
+									<button name="action_send_request" string="Send request"
+										type="object" icon="gtk-go-forward" attrs="{'invisible':[('request_send','=',True)]}"
+										groups="hwseta_etqe.group_prov_quals,hwseta_etqe.group_seta_administrator,hwseta_etqe.group_dc_stakeholder_data" />
+									<button name="action_approved_request" string="Approve"
+										type="object" icon="gtk-go-forward"
+										attrs="{'invisible':['|','|',('approval_request','=',True),('request_send','=',False),('reject_request','=',True)]}"
+										groups="hwseta_etqe.group_qual_approvals,hwseta_etqe.group_seta_administrator,hwseta_etqe.group_dc_stakeholder_data" />
+									<button name="action_rejected_request" string="Reject"
+										type="object" icon="gtk-close"
+										attrs="{'invisible':['|','|',('reject_request','=',True),('request_send','=',False),('approval_request','=',True)]}"
+										groups="hwseta_etqe.group_seta_administrator,hwseta_etqe.group_qual_approvals" />
+								</tree>
+								<form string="Skills Programme">
+									<sheet>
+										<group>
+											<group>
+												<field name="skills_programme_partner_rel_id" readonly="1"/>
+
+												<!-- <field name="skills_programme_id"
+													   on_change="onchange_skills_programme(skills_programme_id)"
+													   options="{'no_create': True,'no_quick_create':True,'no_open':True}"
+													   domain="[('seta_branch_id','=','585')]" /> -->
+												<field name="skills_programme_id"
+													   on_change="onchange_skills_programme(skills_programme_id)"
+													   options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+
+												<field name="assessor_no" placeholder="Enter Assessor ID"/>
+												<field name="assessors_id"
+												options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+												<field name="assessor_sla_document" domain="[('id','=',None)]"
+													options="{'no_quick_create':True,'no_open':True}" />
+
+											</group>
+											<group>
+												<field name="skill_saqa_id" />
+												<field name="moderator_no" placeholder="Enter Moderator ID"/>
+												<field name="moderators_id"
+													options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+												<field name="moderator_sla_document" domain="[('id','=',None)]"
+													options="{'no_quick_create':True,'no_open':True}" />
+											</group>
+										</group>
+										<group>
+											<field name="unit_standards_line" nolabel="1">
+												<tree string="Unit Standards" editable="bottom" delete="false" create="false">
+													<field name="type" readonly="1" />
+													<field name="id_no" readonly="1" />
+													<field name="title" readonly="1" />
+													<field name="level1" readonly="1" />
+													<field name="level2" readonly="1" />
+													<field name="level3" readonly="1" />
+													<field name="selection" />
+												</tree>
+											</field>
+										</group>
+
+									</sheet>
+								</form>
+							</field>
+
+							  <field name="learning_programme_ids" nolabel="1">
+								<tree>
+									<field name="request_send" invisible="1" />
+									<field name="approval_request" invisible="1" />
+									<field name="reject_request" invisible="1" />
+
+									<field name="lp_saqa_id" />
+									<field name="learning_programme_id" widget="selection"
+										placeholder="Learning Programme" class="oe_no_button" />
+									<field name="assessors_id"
+										options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+									<field name="assessor_sla_document" domain="[('id','=',None)]"
+										options="{'no_quick_create':True,'no_open':True}" />
+									<field name="moderators_id"
+										options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+									<field name="moderator_sla_document" domain="[('id','=',None)]"
+										options="{'no_quick_create':True,'no_open':True}" />
+									<field name="status"></field>
+									<button name="action_send_request" string="Send request"
+										type="object" icon="gtk-go-forward" attrs="{'invisible':[('request_send','=',True)]}"
+										groups="hwseta_etqe.group_prov_quals,hwseta_etqe.group_seta_administrator,hwseta_etqe.group_dc_stakeholder_data" />
+									<button name="action_approved_request" string="Approve"
+										type="object" icon="gtk-go-forward"
+										attrs="{'invisible':['|','|',('approval_request','=',True),('request_send','=',False),('reject_request','=',True)]}"
+										groups="hwseta_etqe.group_qual_approvals,hwseta_etqe.group_seta_administrator,hwseta_etqe.group_dc_stakeholder_data" />
+									<button name="action_rejected_request" string="Reject"
+										type="object" icon="gtk-close"
+										attrs="{'invisible':['|','|',('reject_request','=',True),('request_send','=',False),('approval_request','=',True)]}"
+										groups="hwseta_etqe.group_qual_approvals,hwseta_etqe.group_seta_administrator" />
+								</tree>
+								<form string="Learning Programme">
+									<sheet>
+										<group>
+											<group>
+												<field name="learning_programme_partner_rel_id" readonly="1"/>
+
+												<field name="learning_programme_id"
+													on_change="onchange_learning_programme(learning_programme_id)"
+													options="{'no_create': True,'no_quick_create':True,'no_open':True}"
+													domain="[('seta_branch_id','=','585')]" />
+												<field name="assessor_no" placeholder="Enter Assessor ID"/>
+												<field name="assessors_id"
+												options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+												<field name="assessor_sla_document" domain="[('id','=',None)]"
+													options="{'no_quick_create':True,'no_open':True}" />
+
+											</group>
+											<group>
+												<field name="lp_saqa_id" />
+												<field name="moderator_no" placeholder="Enter Moderator ID"/>
+												<field name="moderators_id"
+													options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+												<field name="moderator_sla_document" domain="[('id','=',None)]"
+													options="{'no_quick_create':True,'no_open':True}" />
+											</group>
+										</group>
+										<group>
+											<field name="unit_standards_line" nolabel="1">
+												<tree string="Unit Standards" editable="bottom" delete="false" create="false">
+													<field name="type" readonly="1" />
+													<field name="id_no" readonly="1" />
+													<field name="title" readonly="1" />
+													<field name="level1" readonly="1" />
+													<field name="level2" readonly="1" />
+													<field name="level3" readonly="1" />
+													<field name="selection" attrs="{'readonly': [('type','in',['Core','Fundamental'])]}"/>
+													<field name="seta_approved_lp" readonly="1"/>
+													<field name="provider_approved_lp" readonly="1"/>
+												</tree>
+											</field>
+										</group>
+
+									</sheet>
+								</form>
+							</field>
+
+						</group>
+					</group>
+					<!-- <div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+						<field name="message_ids" widget="mail_thread" />
+					</div> -->
+				</form>
+			</field>
+		</record>
+
+		<record id="view_res_partner_form_admin_inherit" model="ir.ui.view">
+         <field name="name">view.provider.form.inherit</field>
+         <field name="model">res.partner</field>
+         <field name="inherit_id" ref="view_res_partner_form_admin" />
+         <field name="groups_id" eval="[(6, 0, [ref('hwseta_etqe.group_qual_approvals') ])]" />
+         <field name="arch" type="xml">
+                <xpath expr="//field[@name='qualification_ids']//tree" position="attributes">
+               <attribute name="create">false</attribute>
+            </xpath>
+                <xpath expr="//field[@name='learning_programme_ids']//tree" position="attributes">
+               <attribute name="create">false</attribute>
+            </xpath>
+			 <xpath expr="//field[@name='skills_programme_ids']//tree" position="attributes">
+               <attribute name="create">false</attribute>
+            </xpath>
+
+            </field>
+</record>
+		<record id="view_res_partner_tree_admin" model="ir.ui.view">
+			<field name="name">provider.tree.admin</field>
+			<field name="model">res.partner</field>
+			<field name="arch" type="xml">
+				<tree string="res_partner" create="false">
+					<field name="provider_accreditation_num"/>
+					<field name="display_name"/>
+					<field name="phone"/>
+					<field name="email"/>
+                    <field name="provider_start_date"/>
+                    <field name="provider_end_date"/>
+					<field name="provider_status_Id"/>
+				</tree>
+			</field>
+		</record>
+		<record id="view_res_partner_search_admin" model="ir.ui.view">
+			<field name="name">provider.search.admin</field>
+			<field name="model">res.partner</field>
+			<field name="arch" type="xml">
+				<search string="res partner Search">
+					<field name="name"/>
+					<field name="employer_sdl_no"/>
+					<field name="provider_status_Id"/>
+				</search>
+			</field>
+		</record>
+		<!-- res partner action menu -->
+		<record id="action_res_partner_view_admin" model="ir.actions.act_window">
+			<field name="name">action.provider.Admin</field>
+			<field name="res_model">res.partner</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('provider','=',True),('parent_id','=',None),('active','=',True)]
+			</field>
+			<!-- <field name="context">{'default_is_learner':1,'default_seta_elements':1,'default_provider_learner':1}
+			</field> -->
+			<field name="view_id" eval="False" />
+			<field name="search_view_id" ref="view_res_partner_search_admin" />
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to add a new Learner Profile.
+				</p>
+			</field>
+		</record>
+
+		<record id="action_res_partner_tree_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_res_partner_tree_admin" />
+			<field name="act_window_id" ref="action_res_partner_view_admin" />
+		</record>
+
+		<record id="action_res_partner_form_admin" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_res_partner_form_admin" />
+			<field name="act_window_id" ref="action_res_partner_view_admin" />
+		</record>
+		<!--<menuitem name="providers" id="learner_res_partner_admin_menu" action="action_res_partner_view_admin"-->
+			<!--sequence="1" parent="seta_admin_submenu" groups="hwseta_etqe.group_seta_administrator"/>-->
+		<menuitem name="PQW" id="learner_res_partner_admin_menu" action="action_res_partner_view_admin"
+			sequence="1" groups="hwseta_etqe.group_seta_administrator,hwseta_etqe.group_prov_quals,hwseta_etqe.group_qual_approvals"/>
+
+
+
+
+
+    <!--Bongi - Skills Programme Admin View  -->
+
+		<record id="skills_programme_form_admin" model="ir.ui.view">
+			<field name="name">skills.programme.form.admin</field>
+			<field name="model">skills.programme.learner.rel</field>
+			<!--DOUBLE CHECK ATUAL MODEL NAME-->
+			<field name="arch" type="xml">
+				<form string="Skills Programme">
+					<sheet>
+						<group>
+							<group>
+
+
+								<field name="skills_programme_id" on_change="onchange_skills_programme(skills_programme_id)" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+								<field name="start_date"/>
+								<field name="assessors_id"/>
+								<field name="assessor_date"/>
+								<field name="batch_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+							</group>
+							<group>
+								<field name="saqa_skill_id"/>
+								<field name="end_date"/>
+								<field name="moderators_id"/>
+								<field name="moderator_date"/>
+								<field name="provider_id"/>
+								<field name="select" invisible="1"/>
+							</group>
+						</group>
+						<group>
+							<group>
+								<field name="approval_date" modifiers="{}"/>
+								<field name="certificate_no" modifiers="{}"/>
+								<field name="end_date" modifiers="{'required': true}"/>
+								<field name="skills_programme_learner_rel_ids" modifiers="{}"/>
+								<field name="lqw_status" modifiers="{}"/>
+								<field name="is_learner_achieved" modifiers="{}"/>
+							</group>
+							<group>
+								<field name="skill_status" modifiers="{}"/>
+								<field name="certificate_date" modifiers="{}"/>
+								<field name="total_credits" modifiers="{'readonly': true}"/>
+								<field name="minimum_credits" modifiers="{'readonly': true}"/>
+								<field name="is_complete" modifiers="{}"/>
+								<field name="skills_programme_learner_rel_id" modifiers="{}"/>
+							</group>
+						</group>
+						<group>
+							<field name="unit_standards_line" nolabel="1">
+								<tree string="Unit Standards Line" editable="bottom" delete="false" create="false">
+									<field name="type" readonly="1"/>
+									<field name="id_no" readonly="1"/>
+									<field name="title" readonly="1"/>
+									<field name="level1" readonly="1"/>
+									<field name="level2" readonly="1"/>
+									<field name="level3" readonly="1"/>
+									<field name="selection" readonly="1"/>
+									<field name="achieve" readonly="1"/>
+								</tree>
+
+							</field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<!--tree view for skills-->
+		<record id="view_skills_programme_tree_admin" model="ir.ui.view">
+			<field name="name">skills.programme.tree.admin</field>
+			<field name="model">skills.programme.learner.rel</field>
+			<!--DOUBLE CHECK ACTIUAL MODEL NAME-->
+			<field name="arch" type="xml">
+				<tree string="Skills Programmme">
+					<field name="saqa_skill_id" invisible="1"/>
+					<field name="skills_programme_id" widget="selection"
+					placeholder="Skills Programme" class="oe_no_button" />
+					<field name="select" invisible="1" />
+					<field name="start_date" />
+					<field name="end_date" />
+					<field name="provider_id" />
+					<field name="certificate_no" />
+					<field name="certificate_date" />
+									<!-- TODO: hard eval-->
+					<field name="is_complete" readonly="1" />
+					<field name="is_learner_achieved" readonly="1" />
+					<field name="assessors_id" />
+					<field name="assessor_date" />
+					<field name="moderators_id" />
+					<field name="moderator_date" />
+					<field name="approval_date" />
+					<field name="batch_id" />
+					<field name="skill_status" />
+				</tree>
+			</field>
+		</record>
+
+		<!--search view for skills-->
+		<record id="view_skills_programme_search_admin" model="ir.ui.view">
+			<field name="name">skills.programme.search.admin</field>
+			<field name="model">skills.programme.learner.rel</field>
+			<field name="arch" type="xml">
+				<search string="Skills Programme Search">
+<!--					<field name="name"/>-->
+<!--					<field name="learner_identification_id" />-->
+					<!-- <field name="learner_reg_no" />  rather search by email/cell number -->
+<!--					<field name="national_id" />-->
+<!--					<group string="Group By">-->
+<!--						<filter string="Status" icon="terp-personal" domain="[]"-->
+<!--							context="{'group_by':'state'}" />-->
+<!--					</group>-->
+				</search>
+			</field>
+		</record>
+
+		<!-- action for skills programme view -->
+		<record id="action_skills_programme_view_admin" model="ir.actions.act_window">
+			<field name="name">Skills Programme Admin</field>
+			<field name="res_model">skills.programme.learner.rel</field>
+			<!--DOUBLE CHECK ACTIUAL MODEL NAME-->
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="view_skills_programme_search_admin" />
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to add a new Skills Programme.
+				</p>
+			</field>
+		</record>
+		<record id="action_skills_programme_tree_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_skills_programme_tree_admin"/>
+			<field name="act_window_id" ref="action_skills_programme_view_admin"/>
+		</record>
+		<record id="action_skills_programme_form_admin" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence"/>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="skills_programme_form_admin"/>
+			<field name="act_window_id" ref="action_skills_programme_view_admin"/>
+		</record>
+		<menuitem name="Skills Programmes" id="skills_programme_entry_admin" action="action_skills_programme_view_admin"
+			sequence="1" groups="hwseta_etqe.group_seta_administrator"/>
+
+		<!-- assessors / amqw -->
+
+		    <record id="view_hr_employee_amqw_form_admin" model="ir.ui.view">
+			<field name="name">assessors.form.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<form create="false">
+					<sheet>
+					<group>
+						  <group>
+
+							<field name="is_active_assessor" readonly="1"/>
+							<!-- <field name="user_id" string="user" readonly="1"/> -->
+							<field name="start_date" readonly="1"/>
+							<field name="end_date" readonly="1"/>
+
+              									<field name="qualification_ids" context="{'hr_id': id}"
+										nolabel="1">
+										<tree string="Qualifications" colors="green:qual_unit_type == 'qual';orange:qual_unit_type == 'unit'">
+											<field name="qual_unit_type" widget="radio" nolabel="1" invisible="1"/>
+											<field name="saqa_qual_id" />
+											<field name="qualification_hr_id" widget="selection"
+												placeholder="Qualification" class="oe_no_button" />
+											<field name="is_exit_level_outcomes" readonly="1"/>
+											<field name="current_hr_id" invisible="1" />
+											<field name="request_send" invisible="1" />
+											<field name="approval_request" invisible="1" />
+											<field name="reject_request" invisible="1" />
+											<field name="qualification_status"></field>
+											<button name="action_send_request" string="Send request"
+												type="object" icon="gtk-go-forward"
+												attrs="{'invisible':[('request_send','=',True)]}"
+												groups="hwseta_etqe.group_moderators,hwseta_etqe.group_assessors,hwseta_etqe.group_dc_stakeholder_data,hwseta.group_seta_administrator,hwseta_etqe.group_ampqw_quals,hwseta_etqe.group_ampqw_qual_approvals" />
+											<button name="action_approved_request" string="Approve"
+												type="object" icon="gtk-go-forward"
+												attrs="{'invisible':['|','|',('approval_request','=',True),('request_send','=',False),('reject_request','=',True)]}"
+												            groups="hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_seta_administrator, hwseta_etqe.group_ampqw_qual_approvals, hwseta_etqe.group_dc_stakeholder_data" />
+											<button name="action_rejected_request" string="Reject"
+												type="object" icon="gtk-close"
+												attrs="{'invisible':['|','|',('reject_request','=',True),('request_send','=',False),('approval_request','=',True)]}"
+												            groups="hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_seta_administrator, hwseta_etqe.group_ampqw_qual_approvals, hwseta_etqe.group_dc_stakeholder_data" />
+										</tree>
+										<form string="Qualifications">
+											<sheet>
+												<field name="qual_unit_type" widget="radio" nolabel="1" />
+												<group>
+													<field name="qualification_hr_id"
+														on_change="onchange_qualification(qualification_hr_id)"
+														options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+													<field name="saqa_qual_id" />
+													<field name="is_exit_level_outcomes" readonly="1" />
+												</group>
+												<group>
+													<field name="qualification_line_hr" nolabel="1">
+														<tree string="Qualifications Line" editable="bottom"
+															delete="false">
+															<field name="type" readonly="1" />
+															<field name="id_no" readonly="1" />
+															<field name="title" readonly="1" />
+															<field name="level1" readonly="1" />
+															<field name="level2" readonly="1" />
+															<field name="level3" readonly="1" />
+															<field name="selection" />
+														</tree>
+
+													</field>
+												</group>
+
+											</sheet>
+										</form>
+									</field>
+
+						  </group>
+					</group>
+					</sheet>
+														<div class="oe_chatter">
+										<field name="message_follower_ids" widget="mail_followers" />
+										<field name="message_ids" widget="mail_thread" />
+									</div>
+
+				</form>
+
+			</field>
+		</record>
+		<record id="view_hr_employee_amqw_tree_admin" model="ir.ui.view">
+			<field name="name">assessor.tree.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<tree string="hr_employee" create="false">
+					<field name="assessor_seq_no"/>
+					<field name="work_email"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+					<field name="is_active_assessor"/>
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="view_hr_employee_amqw_search_admin" model="ir.ui.view">
+			<field name="name">assessor.search.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<search string="Assessors Search">
+					<field name="name"/>
+					<field name="assessor_seq_no"/>
+					<field name="assessor_moderator_identification_id"/>
+				</search>
+			</field>
+		</record>
+		<!-- hr employee action menu -->
+		<record id="action_hr_employee_amqw_view_admin" model="ir.actions.act_window">
+			<field name="name">action.assessors.Admin</field>
+			<field name="res_model">hr.employee</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('assessor_seq_no','!=', None),('parent_id','=',None),('active','=',True)]
+			</field>
+			<!-- <field name="context">{'default_is_learner':1,'default_seta_elements':1,'default_provider_learner':1}
+			</field> -->
+<!--			<field name="view_id" ref="view_hr_employee_amqw_tree_admin" />-->
+			<field name="search_view_id" ref="view_hr_employee_amqw_search_admin" />
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to add a new Learner Profile.
+				</p>
+			</field>
+		</record>
+
+		<record id="action_hr_employee_amqw_tree_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_hr_employee_amqw_tree_admin"/>
+			<field name="act_window_id" ref="action_hr_employee_amqw_view_admin"/>
+		</record>
+
+
+		<record id="action_hr_employee_amqw_form_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence"/>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_hr_employee_amqw_form_admin"/>
+			<field name="act_window_id" ref="action_hr_employee_amqw_view_admin"/>
+		</record>
+
+<menuitem name="AMQW Adminno" id="hr_employee_amqw_admin" action="action_hr_employee_amqw_view_admin"
+			sequence="1" groups="hwseta_etqe.group_seta_administrator"/>
+
+		<!-- moderators ampw -->
+
+		    <record id="view_hr_employee_amqw_m_form_admin" model="ir.ui.view">
+			<field name="name">moderators.form.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<form create="false">
+					<group>
+						  <group>
+
+							<field name="is_active_moderator" readonly="1"/>
+							<!-- <field name="user_id" string="user" readonly="1"/> -->
+							<field name="moderator_start_date" readonly="1"/>
+							<field name="moderator_end_date" readonly="1"/>
+
+              									<field name="moderator_qualification_ids" context="{'hr_id': id, 'place': 'amqw_m'}"
+										nolabel="1">
+										<tree string="Qualifications" colors="green:qual_unit_type == 'qual';orange:qual_unit_type == 'unit'">
+											<field name="qual_unit_type" widget="radio" nolabel="1" invisible="1"/>
+											<field name="saqa_qual_id" />
+											<field name="qualification_hr_id" widget="selection"
+												placeholder="Qualification" class="oe_no_button" />
+											<field name="is_exit_level_outcomes" readonly="1" />
+											<field name="current_hr_id" invisible="1" />
+											<field name="request_send" invisible="1" />
+											<field name="approval_request" invisible="1" />
+											<field name="reject_request" invisible="1" />
+											<field name="qualification_status"></field>
+											<button name="action_send_request" string="Send request"
+												type="object" icon="gtk-go-forward"
+												attrs="{'invisible':[('request_send','=',True)]}"
+												groups="hwseta_etqe.group_moderators,hwseta_etqe.group_assessors,hwseta_etqe.group_dc_stakeholder_data,hwseta.group_seta_administrator,hwseta_etqe.group_ampqw_quals,hwseta_etqe.group_ampqw_qual_approvals" />
+											<button name="action_approved_request" string="Approve"
+												type="object" icon="gtk-go-forward"
+												attrs="{'invisible':['|','|',('approval_request','=',True),('request_send','=',False),('reject_request','=',True)]}"
+												groups="hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_seta_administrator,hwseta_etqe.group_ampqw_qual_approvals, hwseta_etqe.group_dc_stakeholder_data" />
+											<button name="action_rejected_request" string="Reject"
+												type="object" icon="gtk-close"
+												attrs="{'invisible':['|','|',('reject_request','=',True),('request_send','=',False),('approval_request','=',True)]}"
+												groups="hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_seta_administrator,hwseta_etqe.group_ampqw_qual_approvals, hwseta_etqe.group_dc_stakeholder_data" />
+										</tree>
+										<form string="Qualifications">
+											<sheet>
+												<field name="qual_unit_type" widget="radio" nolabel="1" />
+												<group>
+													<field name="qualification_hr_id"
+														on_change="onchange_qualification(qualification_hr_id)"
+														options="{'no_create': True,'no_quick_create':True,'no_open':True}" />
+													<field name="saqa_qual_id" />
+													<field name="is_exit_level_outcomes" readonly="1" />
+												</group>
+												<group>
+													<field name="qualification_line_hr" nolabel="1">
+														<tree string="Qualifications Line" editable="bottom"
+															delete="false">
+															<field name="type" readonly="1" />
+															<field name="id_no" readonly="1" />
+															<field name="title" readonly="1" />
+															<field name="level1" readonly="1" />
+															<field name="level2" readonly="1" />
+															<field name="level3" readonly="1" />
+															<field name="selection" />
+														</tree>
+
+													</field>
+												</group>
+
+											</sheet>
+										</form>
+									</field>
+
+						  </group>
+					</group>
+				</form>
+			</field>
+		</record>
+		<record id="view_hr_employee_amqw_m_tree_admin" model="ir.ui.view">
+			<field name="name">moderator.tree.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<tree string="hr_employee" create="false">
+					<field name="moderator_seq_no"/>
+					<field name="work_email"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+					<field name="is_active_moderator"/>
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="view_hr_employee_amqw_m_search_admin" model="ir.ui.view">
+			<field name="name">moderator.search.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<search string="Moderators Search">
+					<field name="name"/>
+					<field name="moderator_seq_no"/>
+					<field name="assessor_moderator_identification_id"/>
+				</search>
+			</field>
+		</record>
+		<!-- hr employee action menu -->
+		<record id="action_hr_employee_amqw_m_view_admin" model="ir.actions.act_window">
+			<field name="name">action.moderators.Admin</field>
+			<field name="res_model">hr.employee</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('moderator_seq_no','!=', None),('parent_id','=',None),('active','=',True)]
+			</field>
+			<field name="context">{'place': 'ampw_m'}
+			</field>
+			<field name="view_id" ref="view_hr_employee_amqw_m_tree_admin" />
+			<field name="search_view_id" ref="view_hr_employee_amqw_m_search_admin" />
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to add a new Learner Profile.
+				</p>
+			</field>
+		</record>
+
+		<record id="action_hr_employee_amqw_m_tree_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_hr_employee_amqw_m_tree_admin"/>
+			<field name="act_window_id" ref="action_hr_employee_amqw_m_view_admin"/>
+		</record>
+
+
+		<record id="action_hr_employee_amqw_m_form_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence"/>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="view_hr_employee_amqw_m_form_admin"/>
+			<field name="act_window_id" ref="action_hr_employee_amqw_m_view_admin"/>
+		</record>
+		<!--
+
+
+
+		-->
+<!-- moderators ampw -->
+
+		    <record id="view_hr_employee_lqw_form_admin" model="ir.ui.view">
+			<field name="name">learners.form.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<form create="false">
+					<group>
+						  <group>
+
+							<field name="is_learner" readonly="1"/>
+							<!-- <field name="user_id" string="user" readonly="1"/> -->
+							<field name="moderator_start_date" readonly="1"/>
+							<field name="moderator_end_date" readonly="1"/>
+
+              								<field name="learner_qualification_ids" nolabel="1" attrs="{'readonly':[('state','in',['active','re-enrolled','dropout','replacement','suspended','inactive','achieved'])]}">
+									<tree delete="false" colors="green:is_learner_achieved==True;red:is_learner_achieved==False">
+<!--										<field name="learner_qualification_parent_id" on_change="onchange_qualification(learner_qualification_parent_id)" nolabel="1"/>-->
+<!--										<field name="start_date"/>-->
+<!--										<field name="end_date"/>-->
+<!--										<field name="provider_id"/>-->
+<!--										<field name="certificate_no"/>-->
+<!--										<field name="certificate_date"/>-->
+<!--										<field name="is_complete" readonly="1"/>-->
+<!--										<field name="is_learner_achieved" readonly="1"/>-->
+<!--										<field name="is_exit_level_outcomes" readonly="1"/>-->
+<!--										<field name="assessors_id"/>-->
+<!--										<field name="assessor_date"/>-->
+<!--										<field name="moderators_id"/>-->
+<!--										<field name="moderator_date"/>-->
+<!--										<field name="approval_date"/>-->
+<!--										<field name="batch_id"/>-->
+<!--										<field name="qual_status"/>-->
+									</tree>
+									<form string="Qualifications">
+										<sheet>
+											<group>
+												<group>
+													<field name="learner_qualification_parent_id" on_change="onchange_qualification(learner_qualification_parent_id)"/>
+													<field name="start_date"/>
+													<field name="assessors_id"/>
+													<field name="moderators_id"/>
+													<field name="batch_id" options="{'no_create': True,'no_quick_create':True,'no_open':True}"/>
+													<field name="is_exit_level_outcomes" readonly="1"/>
+												</group>
+												<group>
+													<field name="provider_id"/>
+													<field name="end_date"/>
+													<field name="assessor_date"/>
+													<field name="moderator_date"/>
+												</group>
+											</group>
+											<group>
+												<field name="learner_registration_line_ids" nolabel="1" context="{'model' : 'learner.registration.qualification', 'provider_id' :           provider_id}">
+													<tree string="Qualifications Line" editable="bottom" delete="false" create="false">
+														<field name="type" readonly="1" attrs="{'invisible':[('selection','=',False)]}"/>
+														<field name="id_data" readonly="1" attrs="{'invisible':[('selection','=',False)]}"/>
+														<field name="title" readonly="1" attrs="{'invisible':[('selection','=',False)]}"/>
+														<field name="level1" readonly="1" attrs="{'invisible':[('selection','=',False)]}"/>
+														<field name="level2" readonly="1" attrs="{'invisible':[('selection','=',False)]}"/>
+														<field name="level3" readonly="1" attrs="{'invisible':[('selection','=',False)]}"/>
+														<field name="selection" attrs="{'invisible':[('selection','=',False)]}"/>
+														<field name="achieve" attrs="{'invisible':[('selection','=',False)]}"/>
+														<field name="is_rpl_learner" attrs="{'invisible':[('selection','=',False)]}"/>
+													</tree>
+												</field>
+											</group>
+										</sheet>
+									</form>
+								</field>
+
+						  </group>
+					</group>
+				</form>
+			</field>
+		</record>
+		<record id="view_hr_employee_lqw_tree_admin" model="ir.ui.view">
+			<field name="name">learner.tree.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<tree string="hr_employee" create="false">
+					<field name="learner_reg_no"/>
+					<field name="learner_identification_id"/>
+                    <field name="national_id"/>
+                    <field name="name_related"/>
+					<field name="passport_id"/>
+				</tree>
+			</field>
+		</record>
+
+
+
+		<record id="view_hr_employee_lqw_search_admin" model="ir.ui.view">
+			<field name="name">learner.search.admin</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<search string="Learners Search">
+					<field name="name_related"/>
+					<field name="learner_identification_id"/>
+					<field name="national_id"/>
+					<field name="passport_id"/>
+					<field name="learner_reg_no"/>
+				</search>
+			</field>
+		</record>
+		<!-- hr employee action menu -->
+		<record id="action_hr_employee_lqw_view_admin" model="ir.actions.act_window">
+			<field name="name">action.learners.Admin</field>
+			<field name="res_model">hr.employee</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[('is_learner','!=', False),('parent_id','=',None),('active','=',True)]
+			</field>
+			<!-- <field name="context">{'default_is_learner':1,'default_seta_elements':1,'default_provider_learner':1}
+			</field> -->
+			<field name="view_id" ref="view_hr_employee_lqw_tree_admin" />
+			<field name="search_view_id" ref="view_hr_employee_lqw_search_admin" />
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to add a new Learner Profile.
+				</p>
+			</field>
+		</record>
+
+		<record id="action_hr_employee_lqw_tree_admin" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_hr_employee_lqw_tree_admin"/>
+			<field name="act_window_id" ref="action_hr_employee_lqw_view_admin"/>
+		</record>
+
+<!--		<record id="action_hr_employee_amqw_form_admin" model="ir.actions.act_window.view">-->
+<!--			<field eval="1" name="sequence"/>-->
+<!--			<field name="view_mode">form</field>-->
+<!--			<field name="view_id" ref="view_hr_employee_amqw_form_admin"/>-->
+<!--			<field name="act_window_id" ref="action_hr_employee_amqw_view_admin"/>-->
+<!--		</record>-->
+
+
+
+
+<menuitem name="AMQW Ass" id="hr_employee_amqw_admin" action="action_hr_employee_amqw_view_admin"
+			          sequence="1" groups="hwseta_etqe.group_seta_administrator,hwseta_etqe.group_ampqw_qual_approvals,hwseta_etqe.group_ampqw_quals"/>
+<menuitem name="AMQW Mod" id="hr_employee_amqw_m_admin" action="action_hr_employee_amqw_m_view_admin"
+			          sequence="1" groups="hwseta_etqe.group_seta_administrator,hwseta_etqe.group_ampqw_qual_approvals,hwseta_etqe.group_ampqw_quals"/>
+<!--
+<menuitem name="LQW" id="hr_employee_lqw_admin" action="action_hr_employee_lqw_view_admin"
+			sequence="1" groups="hwseta_etqe.group_seta_administrator"/>
+-->
+
+
+
+	</data>
+
+</openerp>

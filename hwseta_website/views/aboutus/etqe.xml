@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+	<data>
+		<!-- === ETQE(Quality Assurance) Page === -->
+		<template id="etqe" name="ETQE (Quality Assurance)" page="True">
+			<t t-call="website.layout">
+				<div id="wrap" class="oe_structure">
+					<div class="oc-sheet clearfix">
+						<div class="oc-layout-wrapper">
+							<div class="oc-content-layout">
+								<div class="oc-content-layout-row">
+
+									<t t-call="hwseta_website.sidebar1" />
+
+									<div class="oc-layout-cell oc-content">
+										<article id="post-273"
+											class="oc-post oc-article  post-273 page type-page status-publish hentry">
+											<h1 class="oc-postheader">ETQA (Quality Assurance)</h1>
+											<div class="oc-postcontent oc-postcontent-0 clearfix">
+												<h2>Overview and Functions of the ETQA Division</h2>
+												<p>A core function of the SETAs is that they act as
+													Education and Training Quality Assurance bodies (ETQAs)
+													within various economic sectors to ensure quality education
+													and training. The FASSET ETQA is accredited by SAQA to
+													monitor and audit achievements in terms of national
+													standards and qualifications.</p>
+												<p>The FASSET ETQA:</p>
+												<ul>
+													<li>accredits constituent providers for specific standards
+														or qualifications registered on the National
+														Qualifications Framework;</li>
+													<li>promotes quality amongst constituent providers;</li>
+													<li>monitors provision by constituent providers;</li>
+													<li>evaluates assessment and facilitation of moderation
+														among constituent providers;</li>
+													<li>registers constituent assessors for specified
+														registered standards or qualifications in terms of the
+														criteria established for this purpose;</li>
+													<li>takes responsibility for the certification of
+														constituent learners;</li>
+													<li>co-operates with the relevant body or bodies appointed
+														to moderate across ETQA bodies including but not limited
+														to, moderating the quality assurance on specified
+														standards or qualifications for which one or more ETQA
+														bodies are accredited;</li>
+													<li>recommends new standards or qualifications to National
+														Standards Bodies for consideration, or modifications to
+														existing standards or qualifications to National Standards
+														Bodies for consideration;</li>
+													<li>maintains a data-base acceptable to the Authority;</li>
+													<li>submits reports to the Authority in accordance with the
+														requirements of the Authority, and</li>
+													<li>performs such other functions that may arise from
+														time-to-time.</li>
+												</ul>
+												<p>In performing its functions, an ETQA Body:</p>
+												<ul>
+													<li>shall abide by regulations 2 to 12 of the National
+														Standards Bodies Regulations (R452 of 28 March 1998,
+														Government Gazette No 18787);</li>
+													<li>may delegate selected functions contemplated in
+														subregulation (1) to a constituent provider or other body
+														with the prior approval of the Authority, but may not
+														delegate its accountability to the Authority; and</li>
+													<li>if established under another Act of Parliament to
+														govern a single coordinated system of multi-qualification
+														providers, shall delegate the function of registering
+														constituent assessors, contemplated in subregulation
+														(1)(e), to its providers if their quality management
+														system includes the monitoring of this function and the
+														South African Qualifications Authority is notified.</li>
+												</ul>
+												<h2>Contacts</h2>
+												<p>Click on the name below to send an e-mail</p>
+											</div>
+										</article>
+									</div>
+
+									<t t-call="hwseta_website.sidebar2" />
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</template>
+	</data>
+</openerp>

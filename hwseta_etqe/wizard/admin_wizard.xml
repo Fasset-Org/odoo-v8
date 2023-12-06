@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="seta_admin_wizard_view" model="ir.ui.view">
+            <field name="name">SETA admin Wizard</field>
+            <field name="model">seta.admin.wizard</field>
+            <field name="arch" type="xml">
+                <form string="seta.admin.wizard">
+                    <group>
+                        <field name="input_field" required="1"/>
+                        <field name="search_by"/>
+                        <group string="Reports">
+                            <field name="quals"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group string="Provider">
+                            <field name="accreditation"/>
+                            <field name="provider"/>
+                            <button name="reject_accreditation" string="reject accreditation" type="object" default_focus="1" class="btn-primary"/>
+                        </group>
+
+                    </group>
+                    <group>
+                        <group string="Assessor/Moderator">
+                            <field name="am_reg_no" />
+                            <field name="assessor_moderator_ref"/>
+                            <button name="reject_am_reg" string="Reject A/M + delete" type="object" default_focus="1" class="btn-primary"/>
+                        </group>
+                        <group string="Learner">
+                            <field name="learner_reg_no"/>
+                            <button name="delete_learner" string="delete learner" type="object" default_focus="1" class="btn-primary"/>
+                        </group>
+
+                    </group>
+<!--                    <group-->
+<!--							attrs="{'invisible':[('accreditation','=',False)]}">-->
+<!--                        <group>-->
+<!--                           -->
+<!--                        </group>-->
+<!--                    </group>-->
+
+                    <footer>
+
+
+
+
+                        <button name="switch_old_am_links" string="switch old linked user to A/M" type="object" default_focus="1" class="btn-primary"/>
+                        <button name="link_user_am" string="link user to A/M" type="object" default_focus="1" class="btn-primary"/>
+                        <button name="get_hlamalani_report" string="qcto report" type="object" default_focus="1" class="btn-primary"/>
+                        <button name="get_active_assessor_report" string="get_active_assessor_report" type="object" default_focus="1" class="btn-primary"/>
+                        <button name="get_active_moderator_report" string="get_active_moderator_report" type="object" default_focus="1" class="btn-primary"/>
+                        <button name="audit_records" string="audit_records" type="object" default_focus="1" class="btn-primary"/>
+                        <button name="relink_am_user" string="relink_am_user" type="object" default_focus="1" class="btn-primary"/>
+<!--                        <button name="create_historical_wsp_status" string="create_historical_wsp_status" type="object" default_focus="1" class="btn-primary"/>-->
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+		<record id="action_seta_admin_wiz" model="ir.actions.act_window">
+            <field name="name">SETA link.stakeholder</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seta.admin.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="seta_admin_wizard_view"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem id="menu_action_seta_admin_wiz"
+				  name="ADMIN"
+				  action="action_seta_admin_wiz"
+				  groups="hwseta_etqe.group_seta_administrator,hwseta_etqe.group_etqe_superuser"
+				  sequence="5"/>
+    </data>
+</openerp>

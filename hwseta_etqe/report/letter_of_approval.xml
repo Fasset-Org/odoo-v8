@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="paperformat_assessor_acc" model="report.paperformat">
+			<field name="name">All Extension Latter format</field>
+			<field name="default" eval="True" />
+			<field name="format">A4</field>
+			<field name="page_height">0</field>
+			<field name="page_width">0</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">40</field>
+			<field name="margin_bottom">42</field>
+			<field name="margin_left">7</field>
+			<field name="margin_right">7</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">53</field>
+			<field name="dpi">90</field>
+		</record>
+
+        <report 
+            id="letter_of_approval_id"
+            string="Provider Letter Of Approval"
+            model="provider.accreditation" 
+            report_type="qweb-pdf"
+            file="hwseta_etqe.report_provider_letter_of_approval" 
+            name="hwseta_etqe.report_provider_letter_of_approval"
+          	groups="hwseta_etqe.group_etqe_manager,hwseta_etqe.group_etqe_executive_manager,hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_etqe_officer,hwseta_etqe.group_etqe_provincial_officer,hwseta_etqe.group_etqe_provincial_administrator,hwseta_etqe.group_etqe_administrator"/>
+        <record id="hwseta_etqe.letter_of_approval_id" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="hwseta_etqe.paperformat_assessor_acc" />
+		</record>
+
+
+        <report 
+            id="provider_extension_of_scope_id"
+            string="Provider Extension of Scope"
+            model="provider.accreditation" 
+            report_type="qweb-pdf"
+            file="hwseta_etqe.report_provider_extension_of_scope" 
+            name="hwseta_etqe.report_provider_extension_of_scope"
+            groups="hwseta_etqe.group_etqe_manager,hwseta_etqe.group_etqe_executive_manager,hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_etqe_officer,hwseta_etqe.group_etqe_provincial_officer,hwseta_etqe.group_etqe_provincial_administrator,hwseta_etqe.group_etqe_administrator"/>
+        <record id="hwseta_etqe.provider_extension_of_scope_id" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="hwseta_etqe.paperformat_assessor_acc" />
+		</record>
+
+        <report 
+            id="letter_of_approval_assessor"
+            string="Assessor Letter Of Approval"
+            model="assessors.moderators.register" 
+            report_type="qweb-pdf"
+            file="hwseta_etqe.report_assessor_letter_of_approval" 
+            name="hwseta_etqe.report_assessor_letter_of_approval"
+            groups="hwseta_etqe.group_etqe_manager,hwseta_etqe.group_etqe_executive_manager,hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_etqe_officer,hwseta_etqe.group_etqe_provincial_officer,hwseta_etqe.group_etqe_provincial_administrator,hwseta_etqe.group_etqe_administrator"/>
+        <record id="hwseta_etqe.letter_of_approval_assessor" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="hwseta_etqe.paperformat_assessor_acc" />
+		</record>
+       
+        <report 
+            id="letter_of_approval_moderator"
+            string="Moderator Letter Of Approval"
+            model="assessors.moderators.register" 
+            report_type="qweb-pdf"
+            file="hwseta_etqe.report_moderator_letter_of_approval" 
+            name="hwseta_etqe.report_moderator_letter_of_approval"
+            groups="hwseta_etqe.group_etqe_manager,hwseta_etqe.group_etqe_executive_manager,hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_etqe_officer,hwseta_etqe.group_etqe_provincial_officer,hwseta_etqe.group_etqe_provincial_administrator,hwseta_etqe.group_etqe_administrator"/>
+        <record id="hwseta_etqe.letter_of_approval_moderator" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="hwseta_etqe.paperformat_assessor_acc" />
+		</record>
+        
+        <report 
+            id="assessor_extension_of_scope_id"
+            string="Assessor Extension Of Scope"
+            model="assessors.moderators.register" 
+            report_type="qweb-pdf"
+            file="hwseta_etqe.report_assessor_extension_of_scope" 
+            name="hwseta_etqe.report_assessor_extension_of_scope"
+            groups="hwseta_etqe.group_etqe_manager,hwseta_etqe.group_etqe_executive_manager,hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_etqe_officer,hwseta_etqe.group_etqe_provincial_officer,hwseta_etqe.group_etqe_provincial_administrator,hwseta_etqe.group_etqe_administrator"/>
+        
+        <record id="hwseta_etqe.assessor_extension_of_scope_id" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="hwseta_etqe.paperformat_assessor_acc" />
+		</record>
+
+        <report 
+            id="moderator_extension_of_scope_id"
+            string="Moderator Extension Of Scope"
+            model="assessors.moderators.register" 
+            report_type="qweb-pdf"
+            file="hwseta_etqe.report_moderator_extension_of_scope" 
+            name="hwseta_etqe.report_moderator_extension_of_scope"
+            groups="hwseta_etqe.group_etqe_manager,hwseta_etqe.group_etqe_executive_manager,hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_etqe_officer,hwseta_etqe.group_etqe_provincial_officer,hwseta_etqe.group_etqe_provincial_administrator,hwseta_etqe.group_etqe_administrator"/>
+        <record id="hwseta_etqe.moderator_extension_of_scope_id" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="hwseta_etqe.paperformat_assessor_acc" />
+		</record>
+
+         <report 
+            id="assessor_reregistration_id"
+            string="Assessor Re-registration"
+            model="assessors.moderators.register" 
+            report_type="qweb-pdf"
+            file="hwseta_etqe.report_assessor_reregistration" 
+            name="hwseta_etqe.report_assessor_reregistration"
+            groups="hwseta_etqe.group_etqe_manager,hwseta_etqe.group_etqe_executive_manager,hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_etqe_officer,hwseta_etqe.group_etqe_provincial_officer,hwseta_etqe.group_etqe_provincial_administrator,hwseta_etqe.group_etqe_administrator"/>
+        <record id="hwseta_etqe.assessor_reregistration_id" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="hwseta_etqe.paperformat_assessor_acc" />
+		</record>
+        <report 
+            id="moderator_reregistration_id"
+            string="Moderator Re-registration"
+            model="assessors.moderators.register" 
+            report_type="qweb-pdf"
+            file="hwseta_etqe.report_moderator_reregistration" 
+            name="hwseta_etqe.report_moderator_reregistration"
+            groups="hwseta_etqe.group_etqe_manager,hwseta_etqe.group_etqe_executive_manager,hwseta_etqe.group_etqe_provincial_manager,hwseta_etqe.group_etqe_officer,hwseta_etqe.group_etqe_provincial_officer,hwseta_etqe.group_etqe_provincial_administrator,hwseta_etqe.group_etqe_administrator"/>
+     
+        <record id="hwseta_etqe.moderator_reregistration_id" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="hwseta_etqe.paperformat_assessor_acc" />
+		</record>
+     </data>
+</openerp>

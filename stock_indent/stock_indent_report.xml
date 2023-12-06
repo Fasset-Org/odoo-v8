@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!-- <report auto="False" id="report_indent" model="indent.indent"
+			name="indent.indent" rml="stock_indent/report/indent.rml" usage="default"
+			string="Indent" attachment="((object.name or '').replace('/','')+'.pdf')" />
+		 -->
+		 
+		 <report 
+            id="report_indent_indent"
+            string="Indents"
+            model="indent.indent" 
+            report_type="qweb-pdf"
+            file="stock_indent.report_stock_indent" 
+            name="stock_indent.report_stock_indent" 
+        />
+		 
+	</data>
+	
+	
+</openerp>

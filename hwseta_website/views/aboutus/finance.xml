@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+	<data>
+		<!-- === Finance Page === -->
+		<template id="finance" name="Finance" page="True">
+			<t t-call="website.layout">
+				<div id="wrap" class="oe_structure">
+					<div class="oc-sheet clearfix">
+						<div class="oc-layout-wrapper">
+							<div class="oc-content-layout">
+								<div class="oc-content-layout-row">
+
+									<t t-call="hwseta_website.sidebar1" />
+
+									<div class="oc-layout-cell oc-content">
+										<article id="post-277"
+											class="oc-post oc-article  post-277 page type-page status-publish hentry">
+											<h1 class="oc-postheader">Finance</h1>
+											<div class="oc-postcontent oc-postcontent-0 clearfix">
+												<h2>Overview and Functions of the Finance Division</h2>
+												<p>The Finance Division’s responsibility is to design and
+													implement financial controls that ensure good financial
+													governance and financial viability of the FASSET as well as
+													ensuring that funding is optimally used to drive the
+													attainment of the strategic requirements.</p>
+												<p>All functioning of the Finance Division occurs within the
+													compliance requirements of the Public Finance Management
+													Act and Treasury Regulations. The key functions of the
+													Finance Division:</p>
+												<ul>
+													<li>Implement and strengthen internal control</li>
+													<li>Review, develop and implement finance policies</li>
+													<li>Monthly reporting on financial results</li>
+													<li>Procurement and recording of goods and services</li>
+													<li>Administration and guidance on tenders</li>
+													<li>Disbursement of mandatory and discretionary grant
+														funding</li>
+													<li>Preparation of the Annual Financial Statements</li>
+													<li>Quarterly reporting on financial results</li>
+													<li>Operations budget preparation and monitoring</li>
+													<li>Risk and fraud prevention management</li>
+													<li>Internal audit function and Auditor-General audit
+														co-ordination and support</li>
+													<li>Participate in Public Sector CFO forums</li>
+													<li>Strategic sessions to ensure strategic alignment to the
+														strategy of the FASSET</li>
+													<li>Monitoring and evaluation of grant funding</li>
+													<li>Asset Management</li>
+													<li>Reporting to the Audit Committee, Finance Committee,
+														Governance Committee, Tender Standing Committee, ExCo and
+														Board</li>
+													<li>Monitor, review, develop and implement measures to
+														limit exposure to fraud and risk;</li>
+												</ul>
+												<h2>Contacts</h2>
+												<p>Click on the name below to send an e-mail</p>
+												<table class="contacttable" border="0" width="100%"
+													cellspacing="0" cellpadding="0">
+												</table>
+											</div>
+										</article>
+									</div>
+
+									<t t-call="hwseta_website.sidebar2" />
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</t>
+		</template>
+	</data>
+</openerp>

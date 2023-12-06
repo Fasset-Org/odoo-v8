@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+	
+		<template id="learner_agreement_layout">
+		    <t t-if="o and 'company_id' in o">
+		        <t t-set="company" t-value="o.company_id"></t>
+		    </t>
+		    <t t-if="not o or not 'company_id' in o">
+		        <t t-set="company" t-value="res_company"></t>
+		    </t>
+		    <t t-call="hwseta_sdp.learner_agreement_layout_header" />
+			<t t-raw="0" />
+			<t t-call="hwseta_sdp.learner_agreement_layout_footer" />
+		</template>
+		
+		<template id="learner_agreement_layout_header">
+			 <div class="header">
+				 <div class="row">
+					<div class="col-xs-3">
+						<img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 100px;"/>
+					</div>
+					<div class="col-xs-9 text-right" style="margin-top:20px;">
+						<img style="width:100px; float:right;" class="img img-responsive" src="/hwseta_sdp/static/src/img/header.png"/>
+					</div>
+				 	<div style="text-align:right;">
+						<span t-field="company.rml_header1"/><br/>
+						Learnership Agreement 2022/23</div>
+<!--					<ul class="list-inline" style="text-align:right;">-->
+<!--						<li>Page:</li>-->
+<!--						<li><span class="page"/></li>-->
+<!--					</ul>-->
+				 </div>
+			 	</div>
+		</template>
+
+		<template id="learner_agreement_layout_footer">
+			 <div class="footer">
+				 <div class="row">
+					<div class="col-xs-6">
+						<img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 100px;"/>
+					</div>
+					 <ul class="list-inline">
+						<strong>Page</strong>
+						<li>
+							<span class="page" />
+						</li>
+						<li>/</li>
+						<li>
+							<span class="topage" />
+						</li>
+					</ul>
+					<div class="col-xs-9 text-right" style="margin-top:20px;">
+						<img style="width:100px; float:right;" class="img img-responsive" src="/hwseta_sdp/static/src/img/header.png"/>
+					</div>
+				 </div>
+			 	</div>
+		</template>
+<!--		<div class="row">-->
+<!--			<div class="col-xs-12" style="text-align:center;padding-top:0px">-->
+<!--				<ul class="list-inline">-->
+<!--					<strong>Page</strong>-->
+<!--					<li>-->
+<!--						<span class="page" />-->
+<!--					</li>-->
+<!--					<li>/</li>-->
+<!--					<li>-->
+<!--						<span class="topage" />-->
+<!--					</li>-->
+<!--				</ul>-->
+<!--					<img  src="/hwseta_etqe/static/src/img/fasstate_footer_new.png"  width="100%" height="90px" />-->
+<!--			</div>-->
+<!--		</div>-->
+		
+	</data>
+</openerp>

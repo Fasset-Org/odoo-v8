@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+	<data >
+		<template id="wss_upload">
+            <t t-call="website.layout">
+                <t t-set="title">WSS</t>
+                <div class="oe_structure">
+					<form class="form-horizontal" method="POST">
+						<fieldset>
+						  <!-- Form Name -->
+						  <h1 class="col-md-12">Register account for WSS submissions</h1>
+						  <!-- Text input-->
+						  <div class="form-group">
+							<label class="col-md-4 control-label" for="textinput">E-Mail</label>
+							<div class="col-md-4">
+								<input id="textinput" name="user_email_id"  type="text" placeholder="Email" class="form-control input-md" />
+
+							</div>
+						  </div>
+
+						  <!-- Textarea -->
+						  <div class="form-group">
+							<label class="col-md-4 control-label" for="textarea">First Name</label>
+							<div class="col-md-4">
+								<input id="textinput" name="first_name"  type="text" placeholder="First Name" class="form-control input-md" />
+							</div>
+						  </div>
+							<div class="form-group">
+							<label class="col-md-4 control-label" for="textarea">Last Name</label>
+							<div class="col-md-4">
+								<input id="textinput" name="last_name"  type="text" placeholder="Last Name" class="form-control input-md" />
+							</div>
+						  </div>
+						  <!-- Button -->
+						  <div class="form-group">
+							<label class="col-md-4 control-label" for="singlebutton" />
+							<div class="col-md-4">
+							  <input name="Send" value="Submit" class="btn btn-primary" type="submit"/>
+							</div>
+
+						  </div>
+						</fieldset>
+					  </form>
+                </div>
+            </t>
+        </template>
+		<record id="wss_upload_page_link" model="website.menu">
+          <field name="name">WSS</field>
+          <field name="url">/page/wssdraftupload</field>
+          <field name="parent_id" ref="website.main_menu" />
+          <field name="sequence" type="int">99</field>
+        </record>
+		<template id="WSSConfirmationMessage" name="WSS Confirmation Message"
+			page="True">
+			<t t-call="website.layout">
+				<div id="wrap1" class="oe_structure">
+					<div class="oc-sheet clearfix">
+						<h1>New Account</h1>
+						<h2>Please reset your password by clicking on the below link to gain access to your newly created profile.</h2>
+						<a class="btn btn-primary btn-lg pull-right mt8" href="/web/reset_password">
+								  <i class="fa fa-arrow-right"/>
+								  Password Reset
+							  </a>
+						<!--<button -->
+					</div>
+				</div>
+			</t>
+		</template>
+		<template id="WSSDuplicateEmailMessage" name="WSS Duplication Email Message"
+			page="True">
+			<t t-call="website.layout">
+				<div id="wrap1" class="oe_structure">
+					<div class="oc-sheet clearfix">
+						<h1>Account Exists</h1>
+						<h2>An account with the email  <t t-esc="email"/> is already registered on the FASSET system.</h2>
+						<h3>Please login to continue or alternatively reset your password at the below link</h3>
+						<a class="btn btn-primary btn-lg pull-right mt8" href="/web/login">
+								<i class="fa fa-arrow-right"/></a>
+								  Login
+						<a class="btn btn-primary btn-lg pull-right mt8" href="/web/reset_password">
+								  <i class="fa fa-arrow-right"/>
+								  Reset
+							  </a>
+					</div>
+				</div>
+			</t>
+		</template>
+		<template id="full_popi_disclaimer" name="Full POPI Disclaimer"
+			            page="True">
+			  <t t-call="website.layout">
+				    <div id="wrap1" class="oe_structure">
+					      <div class="oc-sheet clearfix">
+                    <h1>CONSENT AND ACKNOWLEDGMENT IN TERMS OF THE PROTECTION OF PERSONAL INFORMATION ACT 2013 (POPI)</h1>
+                    <h2>1. Introduction</h2>
+                    <p>The Protection of Personal Information Act (POPI) aims to give effect to the constitutional right to privacy by balancing the right to privacy against that of access to information. POPI requires that personal information pertaining to individuals be processed lawfully and in a reasonable manner that does not infringe on the right to privacy.
+                        This consent form sets out how personal information will be collected, used and protected by the FASSET as required by POPI. The use of the words “the individual” for the purposes of this document shall be a reference to any individual communicating with the FASSET and/or concluding any agreement, registration or application, with the inclusion of each individual referred to or included in terms of such agreement, registration or application.</p>
+
+                    <h2>2. What is personal information?</h2>
+                    <p>The personal information that the FASSET  requires relates to names and surnames, birth dates, identity numbers, passport numbers, demographic information, education information, occupation information, health information, addresses, memberships, and personal and work email and contact details.</p>
+
+                    <h2>3. What is the purpose of the collection, use and disclosure (the processing) of personal information?</h2>
+                    <ul><li>FASSET is legally obligated to collect, use and disclose personal information for the purposes of:</li>
+                        <ul><li>reporting skills development initiatives to the Department of Higher Education and Training, Parliament or any other structure of Government or organisation under Government;</li>
+                            <li>reporting enrolments and achievements of programmes to the South African Qualifications Authority;</li>
+                            <li>reporting on quality assurance functions to the Quality Council of Trades and Occupations;</li>
+                            <li>evaluating and processing applications for access to financial and other benefits;</li>
+                            <li>compiling statistics and other research reports;</li>
+                            <li>providing personalised communications; complying with the law;</li>
+                            <li>and/or for a purpose that is ancillary to the above.</li></ul>
+                        <li>The FASSET  may also use and disclose personal information for the purposes of:</li>
+                        <ul><li>providing personal information to third parties who demonstrate an interest in either employing or making use of the services provided by an individual, in circumstances where the individual has indicated in clause 7(b), below, that he/she would like his/her details made available to potential employers or clients.</li></ul>
+FASSET will not process personal information for a purpose other than those which are identified above without obtaining consent to further processing beforehand.
+                    </ul>
+                    <h2>4. What is ‘processing’?</h2>
+                    <p>POPI provides that the term “processing’’ covers any operation or activity, whether or not by automatic means, concerning personal information, including collection, receipt, recording, organisation, collation, storage, retrieval, alteration, consultation or use; dissemination by means of transmission, distribution or making available in any other form; or merging, linking, as well as restriction and destruction of information.</p>
+
+                    <h2>5. How will the FASSET process personal information?</h2>
+                    <p>The FASSET will only collect personal information for the purpose as stated above. Information will be collected in the following manner:</p>
+                    <ul><li>Directly from the individual;</li>
+                        <li>From the Skills Development Provider (who by signing this form agrees to have obtained the learner information lawfully and in writing);</li>
+                        <li>From the Department of Higher Education and Training, or any organisation under the DHET;</li>
+                        <li>Parliament of South Africa and National Treasury;</li>
+                        <li>From an agent, broker, relative, employer or other duly authorised representative who may seek or request our services/product;</li>
+                        <li>From our own records relating to our previous interactions/membership or responses to the individual’s request for services/membership; and/or</li>
+                        <li>From an equivalent entity.</li></ul>
+
+                        <h2>6. To whom will personal information be disclosed?</h2>
+                        <p>The personal information may be disclosed and exchanged within the network of service providers appointed by the FASSET, other relevant service providers, including the Department of Higher Education and Training, Department of Labour, National Treasury, any organisation in the Higher Education sector, researchers and Internal stakeholders. Personal information will be disclosed to that party, but they will equally be obliged as the FASSET is, to protect personal information in terms of the principles of the POPIA.</p>
+
+                        <h2>7. Consent and Permission to process personal information (authorised signatory):</h2>
+                        <p>I hereby provide authorisation to the FASSET to process the personal information provided for the purpose stated.</p>
+                        <ul>
+                            <li>I understand that withholding of or failure to disclose personal information will result in the FASSET being unable to perform its functions and/or any services or benefits I may require from the FASSET.</li>
+                            <li>I understand that,</li>
+                            <li>providing certain information is an operational requirement of the FASSET.</li>
+                            <li>I have the right not to agree to provide personal information; and by not agreeing, I will not be able to conduct transactions on the FASSET system that may require the provision of personal information for any of the purposes listed under Clause 3 of this Consent Form.</li>
+                            <li>Where I shared personal information of individuals other than myself with the FASSET I hereby provide consent on their behalf to the collection, use and disclosure of their personal information in accordance with this consent provided and I warrant that I am authorised to give this consent on their behalf.</li>
+                            <li>To this end, I indemnify and hold the FASSET harmless in respect of any claims by any other person on whose behalf I have consented, against the FASSET should they claim that I was not so authorised.</li>
+                            <li>I understand that in terms of POPI and other laws of the country, there are instances where my express consent is not necessary in order to permit the processing of personal information, which may be related to police investigations, litigation or when personal information is publicly available.</li>
+                            <li>I will not hold the FASSET responsible for any improper or unauthorised use of personal information that is beyond its reasonable control.</li>
+                        </ul>
+                        <h2>8. Rights regarding the processing of personal information:</h2>
+                        <ul><li>The individual may withdraw consent to the processing of personal information at any time, and should they wish to do so, must provide the FASSET with reasonable notice to this effect. Please note that withdrawal of consent is still subject to the terms and conditions of any contract that is in place. Should the withdrawal of consent result in the interference of legal obligations, then such withdrawal will only be effective if the FASSET agrees to same in writing. The FASSET specifically draws to the attention that the withdrawal of consent may result in it being unable to provide the requested information and/or services and/or benefits. Further, please note that the revocation of consent is not retroactive and will not affect disclosures of personal information that have already been made.</li>
+                            <li>In order to withdraw consent, please contact the Information Officer at popi@fasset.org.za.</li>
+                            <li>Where personal information has changed in any respect, the individual is encouraged to notify the FASSET so that our records may be updated. The FASSET will largely rely on the individual to ensure that personal information is correct and accurate.</li>
+                            <li>The individual has the right to access their personal information that the FASSET may have in its possession and is entitled to request the identity of which third parties have received and/or processed personal information for the purpose. Please note however, that any request in this regard may be declined if:</li>
+                            <ul>
+                                <li>The information comes under legal privilege in the course of litigation,</li>
+                                <li>The disclosure of personal information in the form that it is processed may result in the disclosure of confidential or proprietary information,</li>
+        <li>Giving access may cause a third party to refuse to provide similar information to the FASSET ,</li>
+        <li>The information was collected in furtherance of an investigation or legal dispute, instituted or being contemplated,</li>
+        <li>The information as it is disclosed may result in the disclosure of another person’s information,</li>
+        <li>The information contains an opinion about another person and that person has not consented, and/or </li>
+        <li>The disclosure is prohibited by law.</li>
+                            </ul></ul>
+
+                            <h2>9. Requesting access and lodging of complaints:</h2>
+                            <ul><li>Please submit any requests for access to personal information in writing to the FASSET Deputy Information Officer at popi@fasset.org.za.</li>
+                                <li>With any request for access to personal information, the FASSET will require the individual to provide personal information in order to verify identification and therefore the right to access the information.</li>
+                                <li>There may be a reasonable charge for providing copies of the information requested.</li>
+                                <li>If any request has not been addressed to satisfaction a complaint may be lodged at the office of the Information Regulator.</li>
+                            </ul>
+
+                            <p>I declare that this application is to the best of my/our knowledge true and correct. I understand that the FASSET may independently verify the information.
+By submitting this application, the parties to the application acknowledge that the FASSET and/or any of its affiliates will be processing the personal information included in this application. The processing of such information will be carried out in accordance with the law and in a proper and careful manner in order to not intrude upon the privacy of the data subject to an unreasonable extent. By submitting this application, the parties agree that the purpose collection of the personal information as discussed is adequate, relevant and not excessive. The parties specifically record that all personal information processed shall be confidential information and shall be treated as such by the parties involved respectively. By completing, accepting and signing this application, the authorised signatory confirms that the application guidelines for this application have been read and understood.
+                            </p>
+					      </div>
+				    </div>
+			  </t>
+		</template>
+
+
+  </data>
+</openerp>
